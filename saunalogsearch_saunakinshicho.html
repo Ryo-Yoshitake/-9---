@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/saunalog.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>サウナ錦糸町表示画面</title>
+</head>
+<body>
+    <div class="shop_name">サウナ錦糸町</div>
+    <div class="evaluation">4.0
+        <div class="evaluation_img"><img src="./imgs/saunachara1.png" alt=""></div>
+        <div class="evaluation_img"><img src="./imgs/saunachara1.png" alt=""></div>
+        <div class="evaluation_img"><img src="./imgs/saunachara1.png" alt=""></div>
+        <div class="evaluation_img"><img src="./imgs/saunachara1.png" alt=""></div>
+    </div>
+        <ul class="detail">
+            <li>最寄り駅:JR・半蔵門線 錦糸町駅</li>
+            <li>ジャンル: 高温・ドライ</li>
+            <li>予算: 770~880円/1h(プロサウナー制度あり)</li>
+        </ul>
+    <div class="kinshi_top"></div>
+
+    <div id="time">
+        <p id="date">年月日</p>
+        <p id="RealtimeClockArea">時間</p>   
+    </div> 
+    <div id="content">サ活口コミを投稿
+        <div id="textbox">
+             <textarea id="text" cols="80" rows="10" value placeholder="サウナ温度、水風呂温度、整い具合等を記入"></textarea>
+             <br>
+             <button id="send">投稿</button>
+        </div>
+        <div id="kuchikomi">
+            みんなのサ活
+        </div>
+        <div id="output" style="overflow:auto ; height:300px;"></div>
+        </div>
+        
+
+<script src="https://www.gstatic.com/firebasejs/8.6.2/firebase.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+        
+<script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+
+ <script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDIOW5xztQtdpLMFAczYxMkMye9zsxmTBU",
+    authDomain: "saunalog.firebaseapp.com",
+    projectId: "saunalog",
+    storageBucket: "saunalog.appspot.com",
+    messagingSenderId: "812140724244",
+    appId: "1:812140724244:web:31e4261c9503f1f9946701"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const ref = firebase.database().ref();
+
+  //----------------------------------------------------
+// Login Check
+//----------------------------------------------------
+//Firebase ログインチェック処理
+let userId, userName, userImg;   //認証後にUserデータを保持するグローバル変数！
+const db = firebase.database();  //長いので短い変数名に代入して使用！
+
+//ログイン確認処理
+//参考URL:https://firebase.google.com/docs/auth/web/manage-users?hl=ja
+firebase.auth().onAuthStateChanged(function (user) {
+    //ログインしていればuserへデータを取得
+    if (user) {
+        user = firebase.auth().currentUser; //
+        userId = user.uid;
+        userName = user.displayName;
+        userImg = user.photoURL;
+        console.log(user); //確認用
+    
+    //受信
+        db.ref('users/' + userId).on("value", function (data) {
+          const v = data.val();
+          const k = data.key; 
+          console.log(v)
+          $("#text").val(v.data);
+          const h = '<dl id="+ k +"><dt>'+v.text+'</dt><dd>'+v.date+'</dd></dl>'
+          $("#output").append(h);
+          $('#output').animate({scrollTop: $('#output')[0].scrollHeight}, 'fast');
+      });
+
+    //送信
+        $("#send").on("click",function () {
+            const text = $("#text").val();
+            format_str = 'YYYY/MM/DD ';
+            format_str = format_str.replace(/YYYY/g, YYYY);
+            format_str = format_str.replace(/MM/g, MM);
+            format_str = format_str.replace(/DD/g, DD);
+            format_str += getTime();
+            const date = format_str;
+            const msg = {
+                text:text,
+                date:date
+            }
+            db.ref('users/' + userId).set(msg);
+        });
+    
+    } else {
+        //Not Login
+        location.href = "login.html";
+    }
+});
+
+//   //アイコン処理
+//   let d=0;
+//   const img = ["buke.png","tuku.jpg","caram.png"];
+//   $(".imgs").on("click",function(){
+//        d = $(this).attr("data-img");
+//        $(this).toggleClass("imgs2");
+//   })
+
+// // 送信イベント
+//   $("#send").on("click",function(){
+//      const uname = $("#uname").val(); 
+//      const text = $("#text").val(); 
+//      format_str = 'YYYY/MM/DD ';
+//      format_str = format_str.replace(/YYYY/g, YYYY);
+//      format_str = format_str.replace(/MM/g, MM);
+//      format_str = format_str.replace(/DD/g, DD);
+//      format_str += getTime();
+//      const date = format_str;
+//      const msg = {
+//                uname:uname,
+//                text:text,
+//                date:date,
+//                icon:d
+//           }
+//      ref.push(msg); // 送信処理
+//      $("#text").val("");
+//      $("#uname").val("");
+//   });
+
+// //   送信イベント2
+//   $("#text").on("keydown",function(e){
+//      if(e.keyCode==13){
+//         const uname = $("#uname").val(); 
+//         const text = $("#text").val(); 
+//         format_str = 'YYYY/MM/DD ';
+//         format_str = format_str.replace(/YYYY/g, YYYY);
+//         format_str = format_str.replace(/MM/g, MM);
+//         format_str = format_str.replace(/DD/g, DD);
+//         format_str += getTime();
+//         const date = format_str;
+//         const msg = {
+//                   uname:uname,
+//                   text:text,
+//                   date:date,
+//                   icon:d
+//                }
+//           ref.push(msg); // 送信処理
+//           $("#text").val("");
+//           $("#uname").val("");
+//      }
+//   });
+
+// // 受信イベント 1個ずつ、10個あれば連続でループして10個取ってくる
+//   ref.on("child_added",function(data){
+//      const v = data.val(); //オブジェクト変数の取得 
+//      const k = data.key; //今回は使いませんが削除とかに使います 
+//      const h = '<dl id="+ k +"><dt><img src="imgs/'+img[v.icon]+'" width="30">'+v.uname+'</dt><dd>'+v.text+'<br>'+v.date+'</dd></dl>'; // HTMLを文字で先につくる
+//      $("#output").append(h); // divの中の一番下に挿入する関数
+//      $('#output').animate({scrollTop: $('#output')[0].scrollHeight}, 'fast');
+//      $("#output").css({
+//           "text-align":"right"
+//      });
+//   });
+
+// 日付・現在時刻 //
+var dd = new Date();
+var YYYY = dd.getFullYear();
+var MM = dd.getMonth() + 1;
+var DD = dd.getDate();
+var msg = YYYY + "/" + MM + "/" + DD;
+document.getElementById("date").innerHTML = msg;
+
+function set2fig(num) {
+   var ret;
+   if( num < 10 ) { ret = "0" + num; }
+   else { ret = num; }
+   return ret;
+}
+
+function getTime() {
+var nowTime = new Date(); 
+var nowHour = set2fig( nowTime.getHours() );
+var nowMin  = set2fig( nowTime.getMinutes() );
+var nowSec  = set2fig( nowTime.getSeconds() );
+var msg = nowHour + ":" + nowMin + ":" + nowSec ;
+return msg ;  
+}
+
+function showClock() {
+document.getElementById("RealtimeClockArea").innerHTML = getTime();
+}
+setInterval('showClock()',1000);
+ </script>
+    
+
+</body>
+</html>

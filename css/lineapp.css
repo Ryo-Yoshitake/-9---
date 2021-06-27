@@ -1,0 +1,64 @@
+
+
+ul{
+  list-style-type: none;
+}
+
+li{
+  display: inline;
+}
+
+img:hover{
+  opacity: 0.5;
+  border:2px solid #ff0000;
+}
+
+.imgs2{
+  outline: 2px solid #ff0000;
+  height: 100%;
+}
+
+#output {
+    height: 80vh;
+    background: #8DB4E5;
+    overflow: scroll
+  }
+
+  #date {
+    position:fixed;
+    top: 0;
+    right: 30px;
+  }
+
+  #RealtimeClockArea{
+    position:fixed;
+    top: 20px;
+    right: 30px;
+  }
+
+  #textbox {
+    height: 10vh;
+    display: flex;
+   }
+  
+   #content{
+     position: relative;
+     top: 30px;
+   }
+
+   #text {
+    width: 80%;
+    height: 100%;
+    border: 4px solid #ddd; 
+    box-sizing: border-box; 
+   }
+   
+   #send {
+    width: 262px;
+    height: 100%;
+    background: #61E739;
+    color: #fff;
+    font-size: 2.0rem;
+    font-weight: bold;
+    border: 0;
+   }

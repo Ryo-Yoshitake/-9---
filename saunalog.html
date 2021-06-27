@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>サウナログログイン画面</title>
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> -->
+<link rel="stylesheet" href="css/saunalog.css">
+</head>
+<body>
+    <a class="register" href="./salog_register_form.php">新規会員登録</a>
+    <p class="introduction">あなたにピッタリのサウナが見付かる日本最大級のサウナ検索アプリ</p>
+    <p class="title">サログ</p>
+    <p class="login">会員登録済の方はこちらからログイン</p>
+
+    <!-- 認証に必要な要素 -->
+    <div id="firebaseui-auth-container"></div>
+    <div id="loader"></div>
+    <!-- /認証に必要な要素 -->
+
+    <ul class="comment">
+        <li class="comment1">深い水風呂に入りたい</li>
+        <li class="comment2">あつーいロウリュウも良いな・・・</li>
+        <li class="comment3">外気浴で癒されよう</li>
+        <li class="comment4">水風呂に入る前は汗を流そうね！</li>
+    </ul>
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.6.2/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+<!-- /Firebase -->
+
+<script>
+// Initialize Firebase
+//**************************************************************************************
+//ここにFirebase Key を貼り付ける（firebaseConfig）
+var firebaseConfig = {
+    apiKey: "AIzaSyDIOW5xztQtdpLMFAczYxMkMye9zsxmTBU",
+    authDomain: "saunalog.firebaseapp.com",
+    projectId: "saunalog",
+    storageBucket: "saunalog.appspot.com",
+    messagingSenderId: "812140724244",
+    appId: "1:812140724244:web:31e4261c9503f1f9946701"
+  };
+//ここにFirebase Key を貼り付ける（firebaseConfig）
+//**************************************************************************************
+firebase.initializeApp(firebaseConfig);
+
+
+//認証設定
+//参考URL:https://firebase.google.com/docs/auth/web/firebaseui?hl=ja
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
+var uiConfig = {
+    callbacks: {
+        signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+            return true; //リダイレクトする=true, リダイレクトしない=false
+        },
+        uiShown: function () {
+            $("#loader").css("display","none"); //uiライブラリ読み込み完了後 → 非表示にする
+        }
+    },
+    signInFlow: 'popup',             //認証画面をPOPUP
+    signInSuccessUrl: './saunalogmain.html', //認証後の表示画面
+    signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,   //Google認証
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,    //Email認証
+    ],
+};
+//認証設定をセット
+ui.start('#firebaseui-auth-container', uiConfig);
+
+// コメント文字をゆっくり出す
+function ani1(){
+$('.comment1').fadeIn(1000);
+$('.comment1').fadeOut(3000);
+}
+function ani2(){
+$('.comment2').fadeIn(3000);
+$('.comment2').fadeOut(3000);
+}
+function ani3(){
+$('.comment3').fadeIn(3000);
+$('.comment3').fadeOut(3000);
+}
+function ani4(){
+$('.comment4').fadeIn(3000);
+$('.comment4').fadeOut(3000);
+}
+
+$(function(){
+    setTimeout('ani1()',1000);
+    setTimeout('ani2()',5000);
+    setTimeout('ani3()',11000);
+    setTimeout('ani4()',17000);
+});
+
+// コメントを1文字ずつ表示
+// function ani1(){
+// $(function() {
+//     var $allMsg = $('.comment1');
+//     var $wordList = $('.comment1').html().split("");
+//     $('.comment1').html("");
+//     $.each($wordList, function(idx, elem) {
+//         var newEL = $("<span/>").text(elem).css({ opacity: 0 });
+//         newEL.appendTo($allMsg);
+//         newEL.delay(idx * 70);
+//         newEL.animate({ opacity: 1 }, 3000);
+//         newEL.animate({ opacity: 0 }, 3000);
+//     });
+// });
+// };
+// function ani2(){
+// $(function() {
+//     var $allMsg = $('.comment2');
+//     var $wordList = $('.comment2').html().split("");
+//     $('.comment2').html("");
+//     $.each($wordList, function(idx, elem) {
+//         var newEL = $("<span/>").text(elem).css({ opacity: 0 });
+//         newEL.appendTo($allMsg);
+//         newEL.delay(idx * 70);
+//         newEL.animate({ opacity: 1 }, 3000);
+//         newEL.animate({ opacity: 0 }, 3000);
+//     });
+// });
+// };
+// function ani3(){
+// $(function() {
+//     var $allMsg = $('.comment3');
+//     var $wordList = $('.comment3').html().split("");
+//     $('.comment3').html("");
+//     $.each($wordList, function(idx, elem) {
+//         var newEL = $("<span/>").text(elem).css({ opacity: 0 });
+//         newEL.appendTo($allMsg);
+//         newEL.delay(idx * 70);
+//         newEL.animate({ opacity: 1 }, 3000);
+//         newEL.animate({ opacity: 0 }, 3000);
+//     });
+// });
+// };
+// function ani4(){
+// $(function() {
+//     var $allMsg = $('.comment4');
+//     var $wordList = $('.comment4').html().split("");
+//     $('.comment4').html("");
+//     $.each($wordList, function(idx, elem) {
+//         var newEL = $("<span/>").text(elem).css({ opacity: 0 });
+//         newEL.appendTo($allMsg);
+//         newEL.delay(idx * 70);
+//         newEL.animate({ opacity: 1 }, 3000);
+//         newEL.animate({ opacity: 0 }, 3000);
+//     });
+// });
+// };
+
+// $(function(){
+//     setTimeout('ani1()',1000);
+//     setTimeout('ani2()',6000);
+//     setTimeout('ani3()',11000);
+//     setTimeout('ani4()',16000);
+// });
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+

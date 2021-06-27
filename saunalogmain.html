@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/saunalog.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>サログメイン画面</title>
+</head>
+  <div class="main_top">
+    <a id="out">ログアウト</a>
+    <p1 class="top_text1">掲載サウナ数・画像数No.1</p1>
+    <br>
+    <p2 class="top_text2">サウナ探しはサログ</p2>
+  </div>
+
+  <div class="search_window">
+    <form action=""></form>
+    <ul class="category">
+      <li class="category_contents" id="category_contents1">キーワードから探す</li>
+      <li class="category_contents" id="category_contents2">都道府県から探す</li>
+      <li class="category_contents" id="category_contents3">現在地から探す</li>
+    </ul>
+    <div class="search">
+      <input class="keyword" type="text" value placeholder="施設名・エリア・キーワード"></input>
+      <button class="kensaku" type="submit">検索</button>
+    </div>
+    <div class="search_result"></div>
+      <div class="search_result_num"></div>
+      <div class="search_result_list"></div>
+  </div>
+
+  <div class="todohuken">都道府県一覧
+    <ul>北海道・東北
+      <li><a href="#">北海道</a></li>
+      <li><a href="#">青森</a></li>
+      <li><a href="#">秋田</a></li>
+      <li><a href="#">山形</a></li>
+      <li><a href="#">岩手</a></li>
+      <li><a href="#">宮城</a></li>
+      <li><a href="#">福島</a></li>
+    </ul>
+
+    <ul>関東
+      <li><a href="#">東京</a></li>
+      <li><a href="#">神奈川</a></li>
+      <li><a href="#">埼玉</a></li>
+      <li><a href="#">千葉</a></li>
+      <li><a href="#">栃木</a></li>
+      <li><a href="#">茨城</a></li>
+      <li><a href="#">群馬</a></li>
+    </ul>
+
+    <ul>中部
+      <li><a href="#">愛知</a></li>
+      <li><a href="#">岐阜</a></li>
+      <li><a href="#">静岡</a></li>
+      <li><a href="#">三重</a></li>
+      <li><a href="#">新潟</a></li>
+      <li><a href="#">山梨</a></li>
+      <li><a href="#">長野</a></li>
+      <li><a href="#">石川</a></li>
+      <li><a href="#">富山</a></li>
+      <li><a href="#">福井</a></li>
+    </ul>
+
+    <ul>関西
+      <li><a href="#">大阪</a></li>
+      <li><a href="#">京都</a></li>
+      <li><a href="#">兵庫</a></li>
+      <li><a href="#">京都</a></li>
+      <li><a href="#">滋賀</a></li>
+      <li><a href="#">奈良</a></li>
+      <li><a href="#">和歌山</a></li>
+    </ul>
+
+    <ul>中国・四国
+      <li><a href="#">岡山</a></li>
+      <li><a href="#">広島</a></li>
+      <li><a href="#">鳥取</a></li>
+      <li><a href="#">島根</a></li>
+      <li><a href="#">山口</a></li>
+      <li><a href="#">香川</a></li>
+      <li><a href="#">徳島</a></li>
+      <li><a href="#">愛媛</a></li>
+      <li><a href="#">高知</a></li>
+    </ul>
+
+    <ul>九州・沖縄
+      <li><a href="#">福岡</a></li>
+      <li><a href="#">佐賀</a></li>
+      <li><a href="#">長崎</a></li>
+      <li><a href="#">熊本</a></li>
+      <li><a href="#">大分</a></li>
+      <li><a href="#">宮崎</a></li>
+      <li><a href="#">鹿児島</a></li>
+      <li><a href="#">沖縄</a></li>
+    </ul>
+  </div>
+
+  <div class="saunalist">登録サウナ一覧
+    <ul>
+      <li><a href="#">サウナ&カプセルホテル レインボー新小岩店</a></li>
+      <li><a href="#">Spa Resort 蘭々の湯</a></li>
+      <li><a href="#">新宿区役所前カプセルホテル</a></li>
+      <li><a href="#">ドシー五反田</a></li>
+      <li><a href="./saunalogsearch_saunakinshicho.html">サウナ錦糸町</a></li>
+      <li><a href="#">新宿天然温泉 テルマー湯</a></li>
+      <li><a href="#">豊の国健康ランド</a></li>
+      <li><a href="#">サウナセンター</a></li>
+      <li><a href="#">横浜天然温泉 SPA EAS</a></li>
+      <li><a href="#">錦糸町 スパ&カプセル ニューウィング</a></li>
+    </ul>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.6.2/firebase.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+        
+<script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDIOW5xztQtdpLMFAczYxMkMye9zsxmTBU",
+    authDomain: "saunalog.firebaseapp.com",
+    projectId: "saunalog",
+    storageBucket: "saunalog.appspot.com",
+    messagingSenderId: "812140724244",
+    appId: "1:812140724244:web:31e4261c9503f1f9946701"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const ref = firebase.database().ref();
+
+// 検索方法選択
+function select(category){
+$(function(){
+  $(category).click(function(){
+    $(category).css({"font-size":"13px","color":"tomato"});
+});
+});
+}
+select("#category_contents1");
+select("#category_contents2");
+select("#category_contents3");
+
+
+// 検索&検索結果表示
+$(function(){
+  searchWord = function(){
+    var searchResult,
+        searchText = $(this).val(),
+        targetText,
+        hitNum;
+    
+    searchResult = [];
+
+    $(".search_result_num").empty();
+    $(".search_result_list").empty();
+
+    if(searchText !=""){
+      $(".saunalist li").each(function(){
+        targetText = $(this).text();
+
+        if(targetText.indexOf(searchText)
+        != -1){
+          searchResult.push(targetText);
+        }
+      });
+
+      for (var i = 0;i<
+      searchResult.length;i ++){
+      $("<span>").text(searchResult[i]).appendTo(".search_result_list");
+      }
+
+      hitNum = "<span>検索結果</span>:" + searchResult.length + "件見付かりました";
+      $(".search_result_num").append(hitNum);
+    }
+  };
+  $(".keyword").on("input",searchWord);
+});
+
+// 現在地から探すを押した時のイベント
+$("#category_contents3").on("click", function(){
+    location.href = "./BmapQuery-master/example/infoboxs_showChange.html"
+})
+
+
+// ログアウト
+$("#out").on("click",function () {
+    firebase.auth().signOut().then(function () {
+        location.href = "saunalog.html"; //ログイン画面へ
+    }).catch(function (error) {
+        alert("Out Error");
+    });
+});
+
+</script>
+
+</body>
+</html>

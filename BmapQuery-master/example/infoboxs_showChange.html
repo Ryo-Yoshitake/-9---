@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Geolocation infobox show[one/Multiple]</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>html,body{height:100%;}body{padding:0;margin:0;}h1{padding:0;margin:0;font-size:50%;}</style>
+</head>
+<body>
+
+
+<!-- MAP[START] -->
+<h1>Click on the pin. (Select 1 to 3 as the second argument of the function. The result changes.)</h1>
+<div id="myMap" style="width:100vw;height:100vh;"></div>
+<!-- MAP[END] -->
+
+
+<script src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AjeqfFGLdmwRupeolFo2r-a4_lqiXHqp75XJb-4wG2qz3bTmM1TVq2wYYNyEP_IT' async defer></script>
+<script src="../js/BmapQuery.js"></script>
+<script>
+    //init
+    function GetMap() {
+        //------------------------------------------------------------------------
+        //1. Instance
+        //------------------------------------------------------------------------
+        const map = new Bmap("#myMap");
+
+        
+        //------------------------------------------------------------------------
+        //2. geolocation : Display Map
+        //------------------------------------------------------------------------
+    
+map.geolocation(function(data) {
+            
+        //location
+        const lat = data.coords.latitude;
+        const lon = data.coords.longitude;
+        //Map
+        map.startMap(lat, lon, "load", 10);
+        //pin
+        map.pin(lat,lon,"blue");
+
+    //----------------------------------------------------
+        //3. Infobox
+        //   options = new Array();
+        //   options[index] = { lat, lon, width, height, title, pinColor, description, show };
+        //----------------------------------------------------
+                 
+        const options = [];
+        options[0]={
+            "lat":35.698193,
+            "lon":139.811975,
+            "title":"サウナ錦糸町",
+            "pinColor":"#ff0000",
+            "height":300,
+            "width":320,
+            "description": '<a href="../../saunalogsearch_saunakinshicho.html">Sauna Kinshicho</a><br><img src="../../imgs/saunakinshicho_thumbnail.png" width="300">',
+            "show":false
+        };
+
+        options[1]={
+            "lat":35.68437,
+            "lon":140.03948,
+            "title":"Spa Resort 菜々の湯",
+            "pinColor":"#ff0000",
+            "height":300,
+            "width":320,
+            "description": 'Spa Resort Nana no Yu<br><img src="../../imgs/nananoyu_thumbnail.png" width="300">',
+            "show":false
+        };
+        options[2]={
+            "lat":35.66592,
+            "lon":140.013823,
+            "title":"湯~ねる",
+            "pinColor":"#ff0000",
+            "height":300,
+            "width":320,
+            "description": 'Yu-Neru<br><img src="../../imgs/yuneru_thumbnail.png" width="300">',
+            "show":false
+        };
+
+        options[3]={
+            "lat":35.692299,
+            "lon":140.020111,
+            "title":"ファミー",
+            "pinColor":"#ff0000",
+            "height":300,
+            "width":320,
+            "description": 'Famy<br><img src="../../imgs/famy_thumbnail.png" width="300">',
+            "show":false
+        };
+       
+      
+        //----------------------------------------------------
+        //4. Switch infoboxs
+        //   infoboxLayers(options, true); //true=one, false=Multiple
+        //----------------------------------------------------
+        map.infoboxLayers(options,true);
+        });
+    }
+</script>
+</body>
+</html>
